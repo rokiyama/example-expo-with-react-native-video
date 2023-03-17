@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "example-expo-app",
-    "slug": "example-expo-app",
+    "name": "example-expo-app-2",
+    "slug": "example-expo-app-2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.okiyama.exampleexpoapp2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "38266e19-7a30-4a37-8335-5397004a3be3"
+      }
     }
   }
 }
