@@ -1,11 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import {
-  Button,
   FlatList,
   Image,
-  StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -21,7 +18,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   useEffect(() => loadMore(15), []);
 
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
         numColumns={3}
         data={assets}
@@ -43,12 +40,3 @@ export const HomeScreen = ({ navigation }: Props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
