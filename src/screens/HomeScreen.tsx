@@ -15,7 +15,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 export const HomeScreen = ({ navigation }: Props) => {
   const { width } = useWindowDimensions();
   const { assets, loadMore } = useCameraRoll();
-  useEffect(() => loadMore(15), []);
+  useEffect(() => loadMore(18), []);
 
   return (
     <View>

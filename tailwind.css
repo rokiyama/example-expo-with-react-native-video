@@ -6,6 +6,14 @@
   flex: 1 1 0%
 }
 
+.flex-auto {
+  flex: 1 1 auto
+}
+
+.flex-none {
+  flex: none
+}
+
 .items-center {
   align-items: center
 }

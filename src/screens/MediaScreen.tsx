@@ -2,16 +2,13 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRef, useState } from "react";
 import {
   FlatList,
-  Image,
-  Platform,
   SafeAreaView,
-  StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   ViewToken,
 } from "react-native";
-import { Media } from "../components/media";
+import { useTailwind } from "tailwind-rn";
+import { Media } from "../components/Media";
 import { useCameraRoll } from "../hooks/useCameraRoll";
 import { RootStackParamList } from "../types/navigation";
 
@@ -26,24 +23,27 @@ type onViewableItemsChanged =
   | undefined;
 
 export const MediaScreen = ({ route }: Props) => {
+  const tw = useTailwind();
   const { index } = route.params;
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const [count, setCount] = useState(0);
+  const { assets, loadMore } = useCameraRoll();
   const [currentIndex, setCurrentIndex] = useState(index);
-  const [isSwiping, setIsSwiping] = useState(false);
   // https://github.com/facebook/react-native/issues/30171
   const onViewableItemsChanged = useRef<onViewableItemsChanged>(
     ({ viewableItems }) => {
-      if (viewableItems.length < 1) return;
+      if (viewableItems.length < 1) {
+        return;
+      }
       const i = viewableItems[viewableItems.length - 1].index;
-      if (!i) return;
+      if (!i) {
+        return;
+      }
       setCurrentIndex(i);
     }
   );
-  const { assets, loadMore } = useCameraRoll();
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={tw("flex-1")}>
       <FlatList
         horizontal
         pagingEnabled
@@ -54,53 +54,20 @@ export const MediaScreen = ({ route }: Props) => {
           index,
         })}
         onViewableItemsChanged={onViewableItemsChanged.current}
-        onScrollBeginDrag={() => {
-          console.log("begin");
-          setIsSwiping(true);
-        }}
-        onMomentumScrollEnd={() => {
-          console.log("end");
-          setIsSwiping(false);
-        }}
         data={assets}
-        onEndReached={() => loadMore(3)}
+        onEndReached={() => loadMore(6)}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
               setCount(count + 1);
             }}
           >
-            <Media item={item} />
+            <Media item={item} current={index === currentIndex} />
           </TouchableOpacity>
         )}
       />
-      <Text>
-        index:{index} currentIndex:{currentIndex} count:{count} isSwiping:
-        {String(isSwiping)}
-      </Text>
-      <Text style={{ ...styles.monoFont, color: "seagreen" }}>
-        {assets[currentIndex].uri}
-      </Text>
-      <Text style={{ ...styles.monoFont, color: "sienna" }}>
-        {assets[currentIndex].localUri}
-      </Text>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  monoFont: {
-    fontFamily:
-      Platform.OS === "ios"
-        ? "Courier New"
-        : Platform.OS === "android"
-        ? "monospace"
-        : "",
-  },
-});
