@@ -6,11 +6,11 @@ import Video from "react-native-video";
 
 type Props = {
   uri: string;
-  rate: number;
-  setRate: (number) => void;
+  paused: boolean;
+  setPaused: (paused: boolean) => void;
 };
 
-export const RNVideo = ({ uri, rate, setRate }: Props) => {
+export const RNVideo = ({ uri, paused, setPaused }: Props) => {
   const tw = useTailwind();
   const video = useRef(null);
   const { width } = useWindowDimensions();
@@ -18,7 +18,7 @@ export const RNVideo = ({ uri, rate, setRate }: Props) => {
     <>
       <TouchableOpacity
         onPress={() => {
-          setRate(rate === 0 ? 1 : 0);
+          setPaused(!paused);
         }}
         style={tw("items-center")}
       >
@@ -26,14 +26,14 @@ export const RNVideo = ({ uri, rate, setRate }: Props) => {
           ref={video}
           source={{ uri }}
           style={[{ width }, tw("flex-1")]}
-          rate={rate}
-          paused={false}
+          rate={1}
+          paused={paused}
           volume={1}
           muted={false}
           resizeMode="contain"
           repeat={true}
         />
-        <Text style={tw("flex-none")}>rate={rate}</Text>
+        <Text style={tw("flex-none")}>paused={String(paused)}</Text>
       </TouchableOpacity>
     </>
   );

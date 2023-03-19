@@ -12,10 +12,10 @@ type Props = {
 export const Media = ({ item, current }: Props) => {
   const tw = useTailwind();
   const { width, height } = useWindowDimensions();
-  const [rate, setRate] = useState(0);
+  const [paused, setPaused] = useState(true);
   useEffect(() => {
     if (!current) {
-      setRate(0);
+      setPaused(true);
     }
   }, [current]);
   return (
@@ -27,8 +27,8 @@ export const Media = ({ item, current }: Props) => {
         />
       ) : item.mediaType === "video" ? (
         <RNVideo
-          rate={rate}
-          setRate={setRate}
+          paused={paused}
+          setPaused={setPaused}
           uri={item.localUri || item.uri}
         />
       ) : (
